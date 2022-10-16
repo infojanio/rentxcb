@@ -15,6 +15,7 @@ import {
 } from '@expo-google-fonts/archivo'
 
 import { Home } from './src/screens/Home'
+import { EquipmentDetails } from './src/screens/EquipmentDetails'
 import theme from './src/styles/theme'
 
 export default function App() {
@@ -35,7 +36,7 @@ export default function App() {
   //após carregar as fontes entra na Home
   return (
     <ThemeProvider theme={theme}>
-      <Home />
+      <EquipmentDetails />
     </ThemeProvider>
   )
 }
