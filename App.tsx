@@ -16,6 +16,8 @@ import {
 
 import { Home } from './src/screens/Home'
 import { EquipmentDetails } from './src/screens/EquipmentDetails'
+import { Sheduling } from './src/screens/Sheduling'
+
 import theme from './src/styles/theme'
 
 export default function App() {
@@ -36,7 +38,7 @@ export default function App() {
   //após carregar as fontes entra na Home
   return (
     <ThemeProvider theme={theme}>
-      <EquipmentDetails />
+      <Sheduling />
     </ThemeProvider>
   )
 }
