@@ -1,4 +1,5 @@
 import React from 'react'
+
 import AppLoading from 'expo-app-loading'
 import { ThemeProvider } from 'styled-components'
 
@@ -14,11 +15,9 @@ import {
   Archivo_600SemiBold,
 } from '@expo-google-fonts/archivo'
 
-import { Home } from './src/screens/Home'
-import { EquipmentDetails } from './src/screens/EquipmentDetails'
-import { Sheduling } from './src/screens/Sheduling'
-
 import theme from './src/styles/theme'
+import { Routes } from './src/routes'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 export default function App() {
   //carrega as fontes
@@ -38,7 +37,9 @@ export default function App() {
   //após carregar as fontes entra na Home
   return (
     <ThemeProvider theme={theme}>
-      <Sheduling />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Routes />
+      </GestureHandlerRootView>
     </ThemeProvider>
   )
 }

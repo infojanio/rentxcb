@@ -1,4 +1,12 @@
 import React from 'react'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
+import {
+  ParamListBase,
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
+//import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'react-native'
 
 import { RFValue } from 'react-native-responsive-fontsize'
@@ -16,6 +24,9 @@ import {
 } from './styles'
 
 export function Home() {
+  const navigation = useNavigation<NavigationProp<ParamListBase>>()
+  //  const navigation = useNavigation()
+
   const equipmentData = {
     brand: 'Menegotti',
     name: 'Betoneira',
@@ -26,6 +37,13 @@ export function Home() {
 
     thumbnail:
       'https://brasmetal.com/wp-content/uploads/2019/02/Imagens-recortadas_2.png',
+  }
+
+  //função navegar até EquipmentDetails
+  function handleEquipmentDetails() {
+    //navigation.navigate('EquipamentDetails')
+    console.log('fui')
+    navigation.navigate('EquipmentDetails')
   }
 
   return (
@@ -46,7 +64,9 @@ export function Home() {
       <EquipmentList
         data={[1, 2, 3, 4, 5, 6, 7]}
         keyExtractor={(item) => String(item)}
-        renderItem={({ item }) => <Equipment data={equipmentData} />}
+        renderItem={({ item }) => (
+          <Equipment data={equipmentData} onPress={handleEquipmentDetails} />
+        )}
       />
     </Container>
   )

@@ -1,4 +1,10 @@
 import React from 'react'
+import {
+  ParamListBase,
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
+
 import { StatusBar } from 'react-native'
 import { useTheme } from 'styled-components'
 
@@ -20,8 +26,14 @@ import {
   Footer,
 } from './styles'
 
-export function Sheduling() {
+export function Scheduling() {
   const theme = useTheme()
+
+  const navigation = useNavigation<NavigationProp<ParamListBase>>()
+
+  function handleConfirmRental() {
+    navigation.navigate('SchedulingDetails')
+  }
 
   return (
     <Container>
@@ -59,7 +71,7 @@ export function Sheduling() {
       </Content>
 
       <Footer>
-        <Button title="Confirmar" />
+        <Button title="Confirmar" onPress={handleConfirmRental} />
       </Footer>
     </Container>
   )
