@@ -1,7 +1,8 @@
 import { RFValue } from 'react-native-responsive-fontsize'
 import styled from 'styled-components/native'
-import { FlatList } from 'react-native'
+import { FlatList, FlatListProps } from 'react-native'
 import theme from '../../styles/theme'
+import { EquipmentDTO } from '../../dtos/EquipmentDTO'
 
 export const Container = styled.View`
   flex: 1;
@@ -26,7 +27,11 @@ export const TotalEquipments = styled.Text`
   font-family: ${({ theme }) => theme.fonts.primary_400};
   color: ${({ theme }) => theme.colors.text};
 `
-export const EquipmentList = styled(FlatList).attrs({
+export const EquipmentList = styled(
+  FlatList as new (props: FlatListProps<EquipmentDTO>) => FlatList<
+    EquipmentDTO
+  >,
+).attrs({
   contentContainerStyle: {
     padding: 24,
   },

@@ -1,5 +1,4 @@
-import React from 'react'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import React, { useEffect, useState } from 'react'
 
 import {
   ParamListBase,
@@ -11,9 +10,15 @@ import { StatusBar } from 'react-native'
 
 import { RFValue } from 'react-native-responsive-fontsize'
 
+import { EquipmentDTO } from '../../dtos/EquipmentDTO'
+
+import { api } from '../../services/api'
+
 import Logo from '../../assets/logo.svg'
 
 import { Equipment } from '../../components/Equipment'
+
+import { Load } from '../../components/Load'
 
 import {
   Container,
@@ -24,27 +29,31 @@ import {
 } from './styles'
 
 export function Home() {
-  const navigation = useNavigation<NavigationProp<ParamListBase>>()
+  const [equipments, setEquipments] = useState<EquipmentDTO[]>([])
+  const [loading, SetLoading] = useState(true)
+
   //  const navigation = useNavigation()
-
-  const equipmentData = {
-    brand: 'Menegotti',
-    name: 'Betoneira',
-    rent: {
-      period: 'Ao Dia ',
-      price: 120,
-    },
-
-    thumbnail:
-      'https://brasmetal.com/wp-content/uploads/2019/02/Imagens-recortadas_2.png',
-  }
+  const navigation = useNavigation<NavigationProp<ParamListBase>>()
 
   //função navegar até EquipmentDetails
-  function handleEquipmentDetails() {
-    //navigation.navigate('EquipamentDetails')
-    console.log('fui')
-    navigation.navigate('EquipmentDetails')
+  function handleEquipmentDetails(equipment: EquipmentDTO) {
+    navigation.navigate('EquipmentDetails', { equipment })
   }
+
+  //busca as informações cadastrada na api
+  useEffect(() => {
+    async function fetchEquipments() {
+      try {
+        const response = await api.get('/equipments')
+        setEquipments(response.data)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        SetLoading(false)
+      }
+    }
+    fetchEquipments()
+  }, [])
 
   return (
     <Container>
@@ -60,14 +69,20 @@ export function Home() {
           <TotalEquipments>Total de 12 equipamentos </TotalEquipments>
         </HeaderContent>
       </Header>
-
-      <EquipmentList
-        data={[1, 2, 3, 4, 5, 6, 7]}
-        keyExtractor={(item) => String(item)}
-        renderItem={({ item }) => (
-          <Equipment data={equipmentData} onPress={handleEquipmentDetails} />
-        )}
-      />
+      {loading ? (
+        <Load />
+      ) : (
+        <EquipmentList
+          data={equipments}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <Equipment
+              data={item}
+              onPress={() => handleEquipmentDetails(item)}
+            />
+          )}
+        />
+      )}
     </Container>
   )
 }

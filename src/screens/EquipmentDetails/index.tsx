@@ -3,12 +3,14 @@ import {
   ParamListBase,
   NavigationProp,
   useNavigation,
+  useRoute,
 } from '@react-navigation/native'
 
 import { BackButton } from '../../components/BackButton'
 import { ImageSlider } from '../../components/ImageSlider'
 import { Accessory } from '../../components/Accessory'
 import { Button } from '../../components/Button'
+import { EquipmentDTO } from '../../dtos/EquipmentDTO'
 
 import SpeedSvg from '../../assets/speed.svg'
 import AccelerationSvg from '../../assets/acceleration.svg'
@@ -30,58 +32,64 @@ import {
   Period,
   Price,
   About,
-  Acessories,
+  Accessories,
   Footer,
 } from './styles'
 
+interface Params {
+  equipment: EquipmentDTO
+}
+
 export function EquipmentDetails() {
   const navigation = useNavigation<NavigationProp<ParamListBase>>()
+
+  const route = useRoute()
+  const { equipment } = route.params as Params
 
   //confirmar o aluguel
   function handleConfirmRental() {
     navigation.navigate('Scheduling')
   }
 
+  //Ação do botão voltar
+  function handleBack() {
+    navigation.goBack()
+  }
+
   return (
     <Container>
       <Header>
-        <BackButton onPress={() => {}} />
+        <BackButton onPress={handleBack} />
       </Header>
 
       <EquipmentImages>
-        <ImageSlider
-          imagesUrl={[
-            'https://brasmetal.com/wp-content/uploads/2019/02/Imagens-recortadas_2.png',
-          ]}
-        />
+        <ImageSlider imagesUrl={equipment.photos} />
       </EquipmentImages>
 
       <Content>
         <Details>
           <Description>
-            <Brand>Menegotti</Brand>
-            <Name>Betoneira</Name>
+            <Brand>{equipment.brand}</Brand>
+            <Name>{equipment.name}</Name>
           </Description>
 
           <Rent>
-            <Period>Ao dia</Period>
-            <Price>R$120</Price>
+            <Period>{equipment.rent.period}</Period>
+            <Price>R$ {equipment.rent.price}</Price>
           </Rent>
         </Details>
 
-        <Acessories>
-          <Accessory name="2CV" icon={SpeedSvg} />
-          <Accessory name="Monofásica" icon={AccelerationSvg} />
-          <Accessory name="400L" icon={ForceSvg} />
-          <Accessory name="Energia" icon={GasolineSvg} />
-          <Accessory name="Renta" icon={ExchangeSvg} />
-          <Accessory name="Menegotti" icon={PeopleSvg} />
-        </Acessories>
+        <Accessories>
+          {equipment.accessories.map((accessory) => (
+            <Accessory
+              key={accessory.type}
+              name={accessory.name}
+              icon={SpeedSvg}
+            />
+          ))}
+        </Accessories>
 
-        <About>
-          Betoneira 400L, Monofásica 2CV, Chapa de Aço de 2,66mm, 220V, Renta -
-          MENEGOTTI
-        </About>
+        <About>{equipment.about} </About>
       </Content>
 
       <Footer>
